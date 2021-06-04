@@ -36,7 +36,7 @@ services:
 #    expose:
 #      - 9000
     volumes:
-      - ../:/var/www:cached
+      - ./:/var/www:cached
 #    links:
 #      - mysql
     entrypoint: ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
