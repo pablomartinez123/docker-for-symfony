@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+# Drop database
+docker-compose -f docker-compose.yml exec php-fpm php bin/console --env=test doctrine:schema:drop --force
+
+# Create schema
+docker-compose -f docker-compose.yml exec php-fpm php bin/console --env=test doctrine:schema:update --force
+
+# Load data
+docker-compose -f docker-compose.yml exec php-fpm php bin/console --env=test doctrine:fixtures:load -n

@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+
+# add xdebug specific configurations
+docker-compose -f docker-compose.yml exec php-fpm cp docker_api_rebillia/php-fpm/php_ini_xdebug.ini /usr/local/etc/php/conf.d/zzz_custom_zz.ini
+
+# restart nginx and php-fpm
+docker-compose -f docker-compose.yml exec www nginx -s reload
+
+# remove log file
+docker-compose -f docker-compose.yml exec php-fpm rm -r var/log
+
+# execute code coverage
+docker-compose -f docker-compose.yml exec php-fpm php bin/phpunit
+
+# remove config file
+docker-compose -f docker-compose.yml exec php-fpm rm /usr/local/etc/php/conf.d/zzz_custom_zz.ini
+
+# restart nginx and php-fpm
+docker-compose -f docker-compose.yml exec www nginx -s reload
+
+# reset folder permissions
+docker-compose -f docker-compose.yml exec php-fpm chmod 777 -R var/
+

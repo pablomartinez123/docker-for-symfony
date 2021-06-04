@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  www:
+    build:
+      context: ./nginx
+    image: pablomartinez123/reb-nginx
+    ports:
+      - "80:80"
+#    volumes:
+#      - ../:/var/www:cached
+#      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+#    environment:
+#      - VIRTUAL_HOST=local.rebillia.com
+#      - VIRTUAL_PORT= 8000
+#    links:
+#      - php-fpm
+
+  mysql:
+    build:
+      context: ./mysql
+    image: pablomartinez123/reb-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootroot
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./mysql/data:/var/lib/mysql
+
+  php-fpm:
+    build:
+      context: ../
+      dockerfile: ./docker_api_rebillia/php-fpm/Dockerfile
+    image: pablomartinez123/reb-php
+#    expose:
+#      - 9000
+    volumes:
+      - ../:/var/www:cached
+#    links:
+#      - mysql
+    entrypoint: ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]

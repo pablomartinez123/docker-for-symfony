@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+echo ""
+echo ""
+echo php bin/console $*
+echo ""
+echo ""
+
+docker-compose -f docker-compose.yml exec php-fpm php bin/console $*

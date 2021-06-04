@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+# Add xdebug specific configurations and restart nginx and php-fpm
+
+docker-compose -f docker-compose.yml exec php-fpm cp docker_api_rebillia/php-fpm/php_ini_xdebug.ini /usr/local/etc/php/conf.d/zzz_custom_zz.ini && docker-compose -f /home/pablito/Projects/RebilliaServer/docker_api_rebillia/docker-compose.yml exec www nginx -s reload
